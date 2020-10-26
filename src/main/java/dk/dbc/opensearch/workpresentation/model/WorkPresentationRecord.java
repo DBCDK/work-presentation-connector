@@ -35,6 +35,21 @@ public class WorkPresentationRecord {
         this.types = types;
     }
 
+    public String getAgencyId() {
+        String[] parts = id.split("-");
+        return parts.length == 2 ? parts[0] : "";
+    }
+
+    public String getAgencyNamedIdentifier() {
+        String[] parts = id.split("-|:");
+        return parts.length == 3 ? parts[1] : "";
+    }
+
+    public String getManifestation() {
+        String[] parts = id.split(":");
+        return parts.length == 2 ? parts[1] : "";
+    }
+
     public WorkPresentationRecord withId(String id) {
         this.id = id;
         return this;

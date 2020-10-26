@@ -112,9 +112,18 @@ public class WorkPresentationConnectorTest {
             assertThat(result.getRecords()[0].getId(), is("870970-basis:24699773"));
             assertThat(result.getRecords()[0].getTypes().length, is(1));
             assertThat(result.getRecords()[0].getTypes()[0], is("Lydbog (cd)"));
+            
             assertThat(result.getRecords()[8].getId(), is("870970-basis:25449495"));
             assertThat(result.getRecords()[8].getTypes().length, is(1));
             assertThat(result.getRecords()[8].getTypes()[0], is("Bog stor skrift"));
+
+            assertThat(result.getRecords()[0].getAgencyId(), is("870970"));
+            assertThat(result.getRecords()[0].getAgencyNamedIdentifier(), is("basis"));
+            assertThat(result.getRecords()[0].getManifestation(), is("24699773"));
+
+            assertThat(result.getRecords()[8].getAgencyId(), is("870970"));
+            assertThat(result.getRecords()[8].getAgencyNamedIdentifier(), is("basis"));
+            assertThat(result.getRecords()[8].getManifestation(), is("25449495"));
         }
         catch(WorkPresentationConnectorException connectorException) {
             throw connectorException;
