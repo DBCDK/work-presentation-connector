@@ -20,6 +20,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 public class WorkPresentationConnectorTest {
     private static WireMockServer wireMockServer;
@@ -79,4 +80,24 @@ public class WorkPresentationConnectorTest {
             throw connectorException;
         }
     }
+
+    @Test
+    public void testWorkPresentationWorkSubjects() throws WorkPresentationConnectorException {
+
+        try {
+            WorkPresentationWork result = connector
+                    .presentWorks(new WorkPresentationQuery()
+                            .withManifestation("24699773"));
+
+            assertThat(result.getSubjects().length, is(51));
+            assertThat(result.getSubjects()[0].getValue(), is("1930-1939"));
+            assertThat(result.getSubjects()[0].getType(), nullValue());
+            assertThat(result.getSubjects()[28].getValue(), is("historiske romaner"));
+            assertThat(result.getSubjects()[28].getType(), is("DBCS"));
+        }
+        catch(WorkPresentationConnectorException connectorException) {
+            throw connectorException;
+        }
+    }
+
 }
