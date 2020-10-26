@@ -75,6 +75,21 @@ public class WorkPresentationWork {
         this.records = records;
     }
 
+    public String getAgencyId() {
+        String[] parts = workId.split(":|-");
+        return parts.length == 5 ? parts[2] : "";
+    }
+
+    public String getAgencyNamedIdentifier() {
+        String[] parts = workId.split(":|-");
+        return parts.length == 5 ? parts[3] : "";
+    }
+
+    public String getManifestation() {
+        String[] parts = workId.split(":|-");
+        return parts.length == 5 ? parts[4] : "";
+    }
+
     public WorkPresentationWork withDescription(String description) {
         this.description = description;
         return this;

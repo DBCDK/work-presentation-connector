@@ -142,6 +142,10 @@ public class WorkPresentationConnectorTest {
             assertThat(result.getFullTitle(), is("Den lukkede bog : roman"));
             assertThat(result.getTitle(), is("Den lukkede bog"));
             assertThat(result.getWorkId(), is("work-of:870970-basis:24699773"));
+
+            assertThat(result.getAgencyId(), is("870970"));
+            assertThat(result.getAgencyNamedIdentifier(), is("basis"));
+            assertThat(result.getManifestation(), is("24699773"));
         }
         catch(WorkPresentationConnectorException connectorException) {
             throw connectorException;
