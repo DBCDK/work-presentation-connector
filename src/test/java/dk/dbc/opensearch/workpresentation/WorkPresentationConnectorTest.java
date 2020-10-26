@@ -53,7 +53,7 @@ public class WorkPresentationConnectorTest {
         try {
             WorkPresentationResult result = connector
                     .presentWorks(new WorkPresentationQuery()
-                            .withManifestation("44934582"));
+                            .withManifestation("24699773"));
         }
         catch(WorkPresentationConnectorException connectorException) {
             throw connectorException;
