@@ -100,4 +100,24 @@ public class WorkPresentationConnectorTest {
         }
     }
 
+    @Test
+    public void testWorkPresentationWorkRecords() throws WorkPresentationConnectorException {
+
+        try {
+            WorkPresentationWork result = connector
+                    .presentWorks(new WorkPresentationQuery()
+                            .withManifestation("24699773"));
+
+            assertThat(result.getRecords().length, is(19));
+            assertThat(result.getRecords()[0].getId(), is("870970-basis:24699773"));
+            assertThat(result.getRecords()[0].getTypes().length, is(1));
+            assertThat(result.getRecords()[0].getTypes()[0], is("Lydbog (cd)"));
+            assertThat(result.getRecords()[8].getId(), is("870970-basis:25449495"));
+            assertThat(result.getRecords()[8].getTypes().length, is(1));
+            assertThat(result.getRecords()[8].getTypes()[0], is("Bog stor skrift"));
+        }
+        catch(WorkPresentationConnectorException connectorException) {
+            throw connectorException;
+        }
+    }
 }
