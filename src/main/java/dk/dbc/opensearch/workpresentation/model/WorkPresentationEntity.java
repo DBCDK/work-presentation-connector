@@ -12,15 +12,13 @@ public class WorkPresentationEntity {
 
     public WorkPresentationEntity() {}
 
-    private WorkPresentationResult result;
+    private WorkPresentationWork work;
 
-    public WorkPresentationResult getResult() {
-        return result;
+    public WorkPresentationWork getWork() {
+        return work;
     }
 
-    public void setResult(WorkPresentationResult result) {
-        this.result = result;
+    public void setWork(WorkPresentationWork result) {
+        this.work = result;
     }
-
-    // Todo: Build model
 }

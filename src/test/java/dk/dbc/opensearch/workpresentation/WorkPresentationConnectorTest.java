@@ -7,7 +7,7 @@ package dk.dbc.opensearch.workpresentation;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import dk.dbc.httpclient.HttpClient;
 
-import dk.dbc.opensearch.workpresentation.model.WorkPresentationResult;
+import dk.dbc.opensearch.workpresentation.model.WorkPresentationWork;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.jupiter.api.AfterAll;
@@ -18,6 +18,8 @@ import javax.ws.rs.client.Client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 public class WorkPresentationConnectorTest {
     private static WireMockServer wireMockServer;
@@ -51,9 +53,27 @@ public class WorkPresentationConnectorTest {
     public void testWorkPresentationResponse() throws WorkPresentationConnectorException {
 
         try {
-            WorkPresentationResult result = connector
+            WorkPresentationWork result = connector
                     .presentWorks(new WorkPresentationQuery()
                             .withManifestation("24699773"));
+        }
+        catch(WorkPresentationConnectorException connectorException) {
+            throw connectorException;
+        }
+    }
+
+    @Test
+    public void testWorkPresentationWorkInfo() throws WorkPresentationConnectorException {
+
+        try {
+            WorkPresentationWork result = connector
+                    .presentWorks(new WorkPresentationQuery()
+                            .withManifestation("24699773"));
+
+            assertThat(result.getDescription().contains("karismatiske fødselslæge"), is(true));
+            assertThat(result.getFullTitle(), is("Den lukkede bog : roman"));
+            assertThat(result.getTitle(), is("Den lukkede bog"));
+            assertThat(result.getWorkId(), is("work-of:870970-basis:24699773"));
         }
         catch(WorkPresentationConnectorException connectorException) {
             throw connectorException;
