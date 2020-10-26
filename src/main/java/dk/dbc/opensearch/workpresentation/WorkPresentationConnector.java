@@ -10,7 +10,7 @@ import dk.dbc.httpclient.HttpGet;
 import dk.dbc.invariant.InvariantUtil;
 
 import dk.dbc.opensearch.workpresentation.model.WorkPresentationEntity;
-import dk.dbc.opensearch.workpresentation.model.WorkPresentationResult;
+import dk.dbc.opensearch.workpresentation.model.WorkPresentationWork;
 import net.jodah.failsafe.RetryPolicy;
 
 import javax.ws.rs.ProcessingException;
@@ -66,7 +66,7 @@ public class WorkPresentationConnector {
                 baseUrl, "baseUrl");
     }
 
-    public WorkPresentationResult presentWorks(WorkPresentationQuery query) throws WorkPresentationConnectorException {
+    public WorkPresentationWork presentWorks(WorkPresentationQuery query) throws WorkPresentationConnectorException {
         final Stopwatch stopwatch = new Stopwatch();
 
         try {
@@ -92,7 +92,7 @@ public class WorkPresentationConnector {
         failSafeHttpClient.getClient().close();
     }
 
-    private WorkPresentationResult sendGetRequest(HttpGet httpGet) throws WorkPresentationConnectorException {
+    private WorkPresentationWork sendGetRequest(HttpGet httpGet) throws WorkPresentationConnectorException {
         LOGGER.info("Request with query: {}", httpGet.toString());
 
         final Response response = httpGet.execute();
@@ -101,13 +101,13 @@ public class WorkPresentationConnector {
         return readResponseEntity(response);
     }
 
-    private WorkPresentationResult readResponseEntity(Response response) throws WorkPresentationConnectorException {
+    private WorkPresentationWork readResponseEntity(Response response) throws WorkPresentationConnectorException {
 
         final WorkPresentationEntity entity = response.readEntity(WorkPresentationEntity.class);
         if (entity == null) {
             throw new WorkPresentationConnectorException("Work-presentation service returned with null-valued entity");
         }
-        return entity.getResult();
+        return entity.getWork();
     }
 
     private void assertResponseStatus(Response response, Response.Status expectedStatus)
