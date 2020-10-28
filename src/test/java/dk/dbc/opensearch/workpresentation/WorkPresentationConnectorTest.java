@@ -42,7 +42,7 @@ public class WorkPresentationConnectorTest {
 
     @BeforeAll
     static void setConnector() throws WorkPresentationConnectorException {
-        connector = new WorkPresentationConnector(CLIENT, wireMockHost);
+        connector = new WorkPresentationConnector(CLIENT, wireMockHost, "test");
     }
 
     @AfterAll

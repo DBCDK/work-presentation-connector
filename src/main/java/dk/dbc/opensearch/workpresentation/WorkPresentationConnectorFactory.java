@@ -48,23 +48,27 @@ import javax.ws.rs.client.Client;
 public class WorkPresentationConnectorFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkPresentationConnectorFactory.class);
 
-    public static WorkPresentationConnector create(String baseUrl) throws WorkPresentationConnectorException {
+    public static WorkPresentationConnector create(String baseUrl, String profile) throws WorkPresentationConnectorException {
         final Client client = HttpClient.newClient(new ClientConfig()
                 .register(new JacksonFeature()));
         LOGGER.info("Creating WorkPresentationConnector for: {}", baseUrl);
-        return new WorkPresentationConnector(client, baseUrl);
+        return new WorkPresentationConnector(client, baseUrl, profile);
     }
 
     @Inject
     @ConfigProperty(name = "WORK_PRESENTATION_SERVICE_URL")
     private String baseUrl;
 
+    @Inject
+    @ConfigProperty(name = "WORK_PRESENTATION_PROFILE", defaultValue = "test")
+    private String profile;
+
     WorkPresentationConnector workPresentationConnector;
 
     @PostConstruct
     public void initializeConnector() {
         try {
-            workPresentationConnector = dk.dbc.opensearch.workpresentation.WorkPresentationConnectorFactory.create(baseUrl);
+            workPresentationConnector = dk.dbc.opensearch.workpresentation.WorkPresentationConnectorFactory.create(baseUrl, profile);
         } catch (WorkPresentationConnectorException e) {
             throw new IllegalStateException(e);
         }
