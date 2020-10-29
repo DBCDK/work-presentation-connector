@@ -18,7 +18,7 @@ public class WorkPresentationConnectorTestWireMockRecorder {
      */
     public static void main(String[] args) throws Exception {
         WorkPresentationConnectorTest.connector = new WorkPresentationConnector(
-                WorkPresentationConnectorTest.CLIENT, "http://localhost:8080");
+                WorkPresentationConnectorTest.CLIENT, "http://localhost:8080", "test");
         final WorkPresentationConnectorTest WorkPresentationConnectorTest = new WorkPresentationConnectorTest();
         recordGetApplicantRequests(WorkPresentationConnectorTest);
     }

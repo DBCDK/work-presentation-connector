@@ -11,21 +11,11 @@ import java.nio.charset.StandardCharsets;
 
 public class WorkPresentationQuery {
 
-    private String profile = "test";
-
     private String agencyId = "870970";
 
     private String agencyNamedIdentifier = "basis";
 
     private String manifestation;
-
-    public String getProfile() {
-        return profile;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
 
     public String getAgencyId() {
         return agencyId;
@@ -53,11 +43,6 @@ public class WorkPresentationQuery {
 
     public WorkPresentationQuery withManifestation(String manifestation) {
         this.manifestation = manifestation;
-        return this;
-    }
-
-    public WorkPresentationQuery withProfile(String profile) {
-        this.profile = profile;
         return this;
     }
 

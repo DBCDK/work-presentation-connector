@@ -47,9 +47,10 @@ public class WorkPresentationConnector {
 
     private FailSafeHttpClient failSafeHttpClient;
     private String baseUrl;
+    private String profile;
 
-    public WorkPresentationConnector(Client httpClient, String baseUrl) {
-        this(FailSafeHttpClient.create(httpClient, RETRY_POLICY), baseUrl);
+    public WorkPresentationConnector(Client httpClient, String baseUrl, String profile) {
+        this(FailSafeHttpClient.create(httpClient, RETRY_POLICY), baseUrl, profile);
     }
 
     /**
@@ -59,11 +60,13 @@ public class WorkPresentationConnector {
      * @param baseUrl            base URL for record service endpoint
      * @throws WorkPresentationConnectorException on failure to create {@link dk.dbc.opensearch.workpresentation.WorkPresentationConnector}
      */
-    public WorkPresentationConnector(FailSafeHttpClient failSafeHttpClient, String baseUrl) {
+    public WorkPresentationConnector(FailSafeHttpClient failSafeHttpClient, String baseUrl, String profile) {
         this.failSafeHttpClient = InvariantUtil.checkNotNullOrThrow(
                 failSafeHttpClient, "failSafeHttpClient");
         this.baseUrl = InvariantUtil.checkNotNullNotEmptyOrThrow(
                 baseUrl, "baseUrl");
+        this.profile = InvariantUtil.checkNotNullNotEmptyOrThrow(
+                profile, "profile");
     }
 
     public WorkPresentationWork presentWorks(WorkPresentationQuery query) throws WorkPresentationConnectorException {
@@ -75,7 +78,7 @@ public class WorkPresentationConnector {
             final HttpGet httpGet = new HttpGet(failSafeHttpClient)
                     .withBaseUrl(baseUrl)
                     .withPathElements("work-presentation")
-                    .withQueryParameter("profile", query.getProfile())
+                    .withQueryParameter("profile", profile)
                     .withQueryParameter("agencyId", query.getAgencyId())
                     .withQueryParameter("workId", query.build());
 
