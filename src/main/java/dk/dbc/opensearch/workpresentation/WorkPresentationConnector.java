@@ -109,9 +109,9 @@ public class WorkPresentationConnector {
     }
 
     private WorkPresentationWork readResponseEntity(Response response) throws WorkPresentationConnectorException {
-        LOGGER.info("Received response with mediatype '{}'", response.getMediaType());
+        LOGGER.info("Received response with status '{}'", response.getStatus());
 
-        if (response.getMediaType().equals(MediaType.APPLICATION_JSON_TYPE)) {
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
             final WorkPresentationEntity entity = response.readEntity(WorkPresentationEntity.class);
             if(entity == null) {
                 throw new WorkPresentationConnectorException("Work-presentation service returned with null-valued entity");
