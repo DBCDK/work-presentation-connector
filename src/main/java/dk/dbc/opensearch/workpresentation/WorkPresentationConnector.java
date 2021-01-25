@@ -10,14 +10,18 @@ import dk.dbc.httpclient.HttpGet;
 import dk.dbc.invariant.InvariantUtil;
 
 import dk.dbc.opensearch.workpresentation.model.WorkPresentationEntity;
+import dk.dbc.opensearch.workpresentation.model.WorkPresentationRecord;
 import dk.dbc.opensearch.workpresentation.model.WorkPresentationWork;
 import net.jodah.failsafe.RetryPolicy;
 
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import dk.dbc.util.Stopwatch;
@@ -25,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * WorkPresentatinConnector - WorkPresentation client
+ * WorkPresentationConnector - WorkPresentation client
  * <p>
  * To use this class, you construct an instance, specifying a web resources client as well as
  * a base URL for the WorkPresentatin service endpoint you will be communicating with.
@@ -40,8 +44,7 @@ public class WorkPresentationConnector {
     private static final RetryPolicy<Response> RETRY_POLICY = new RetryPolicy<Response>()
             .handle(Collections.singletonList(ProcessingException.class))
             .handleResultIf(response ->
-                    response.getStatus() == 404
-                            || response.getStatus() == 500
+                    response.getStatus() == 500
                             || response.getStatus() == 502)
             .withDelay(Duration.ofSeconds(5))
             .withMaxRetries(3);
@@ -100,28 +103,38 @@ public class WorkPresentationConnector {
         LOGGER.info("Request with query: {}", httpGet.toString());
 
         final Response response = httpGet.execute();
-        assertResponseStatus(response, Response.Status.OK);
+        assertResponseStatus(response, Arrays.asList(Response.Status.OK, Response.Status.NOT_FOUND));
 
         return readResponseEntity(response);
     }
 
     private WorkPresentationWork readResponseEntity(Response response) throws WorkPresentationConnectorException {
+        LOGGER.info("Received response with mediatype '{}'", response.getMediaType());
 
-        final WorkPresentationEntity entity = response.readEntity(WorkPresentationEntity.class);
-        if (entity == null) {
-            throw new WorkPresentationConnectorException("Work-presentation service returned with null-valued entity");
+        if (response.getMediaType().equals(MediaType.APPLICATION_JSON_TYPE)) {
+            final WorkPresentationEntity entity = response.readEntity(WorkPresentationEntity.class);
+            if(entity == null) {
+                throw new WorkPresentationConnectorException("Work-presentation service returned with null-valued entity");
+            }
+            LOGGER.info("{} results for work-presentation query", entity.getWork().getRecords().length);
+            return entity.getWork();
+        } else {
+            LOGGER.info("No results for work-presentation query");
+            return new WorkPresentationWork().withRecords(new WorkPresentationRecord[0]);
         }
-        return entity.getWork();
     }
 
-    private void assertResponseStatus(Response response, Response.Status expectedStatus)
+    private void assertResponseStatus(Response response, List<Response.Status> expectedStatus)
             throws WorkPresentationUnexpectedStatusCodeException {
-        final Response.Status actualStatus =
-                Response.Status.fromStatusCode(response.getStatus());
-        if (actualStatus != expectedStatus) {
-            throw new WorkPresentationUnexpectedStatusCodeException(
-                    String.format("Work-presentation service returned with unexpected status code: %s",
-                            actualStatus), actualStatus.getStatusCode());
+
+        final Response.Status actualStatus = Response.Status.fromStatusCode(response.getStatus());
+        LOGGER.info("WorkPresentation service returned status code '{}'", actualStatus);
+
+        if (!expectedStatus.contains(actualStatus)) {
+            LOGGER.error("Unexpected status code in response from WorkPresentation service: '{}'", actualStatus);
+                throw new WorkPresentationUnexpectedStatusCodeException(
+                        String.format("Work-presentation service returned with unexpected status code: %s",
+                                actualStatus), actualStatus.getStatusCode());
         }
     }
 }
