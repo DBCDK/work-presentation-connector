@@ -152,4 +152,17 @@ public class WorkPresentationConnectorTest {
         }
     }
 
+    @Test
+    public void testWorkNotFoundDoNotThrow() throws WorkPresentationConnectorException {
+
+        try {
+            WorkPresentationWork result = connector
+                    .presentWorks(new WorkPresentationQuery()
+                            .withManifestation("25449495").withAgencyId("870976"));
+            assertThat("Has no results", result.getRecords().length, is(0));
+        }
+        catch(WorkPresentationConnectorException connectorException) {
+            throw connectorException;
+        }
+    }
 }

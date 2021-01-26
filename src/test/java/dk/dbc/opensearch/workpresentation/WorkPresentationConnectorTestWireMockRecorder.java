@@ -27,6 +27,7 @@ public class WorkPresentationConnectorTestWireMockRecorder {
             throws WorkPresentationConnectorException {
         WorkPresentationConnectorTest.testWorkPresentationResponse();
         WorkPresentationConnectorTest.testWorkPresentationWorkIdForPartOfWork();
+        WorkPresentationConnectorTest.testWorkNotFoundDoNotThrow();
     }
 
 }
