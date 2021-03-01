@@ -57,4 +57,12 @@ public class WorkPresentationSubject {
     public int hashCode() {
         return Objects.hash(value, type);
     }
+
+    @Override
+    public String toString() {
+        return "WorkPresentationSubject{" +
+                "value='" + value + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

@@ -20,7 +20,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 
 public class WorkPresentationConnectorTest {
     private static WireMockServer wireMockServer;
@@ -72,9 +71,9 @@ public class WorkPresentationConnectorTest {
                             .withManifestation("24699773"));
 
             assertThat(result.getDescription().contains("karismatiske fødselslæge"), is(true));
-            assertThat(result.getFullTitle(), is("Den lukkede bog : roman"));
+            assertThat(result.getFullTitle(), is("Den lukkede bog (Ved Torben Petersen)"));
             assertThat(result.getTitle(), is("Den lukkede bog"));
-            assertThat(result.getWorkId(), is("work-of:870970-basis:24699773"));
+            assertThat(result.getWorkId(), is("work-of:870970-basis:27100104"));
         }
         catch(WorkPresentationConnectorException connectorException) {
             throw connectorException;
@@ -90,10 +89,10 @@ public class WorkPresentationConnectorTest {
                             .withManifestation("24699773"));
 
             assertThat(result.getSubjects().length, is(51));
-            assertThat(result.getSubjects()[0].getValue(), is("1930-1939"));
-            assertThat(result.getSubjects()[0].getType(), nullValue());
-            assertThat(result.getSubjects()[28].getValue(), is("historiske romaner"));
-            assertThat(result.getSubjects()[28].getType(), is("DBCS"));
+            assertThat(result.getSubjects()[0].getValue(), is("ægteskab"));
+            assertThat(result.getSubjects()[0].getType(), is("not_specified"));
+            assertThat(result.getSubjects()[28].getValue(), is("for læsesvage voksne"));
+            assertThat(result.getSubjects()[28].getType(), is("DBCN"));
         }
         catch(WorkPresentationConnectorException connectorException) {
             throw connectorException;
@@ -108,22 +107,22 @@ public class WorkPresentationConnectorTest {
                     .presentWorks(new WorkPresentationQuery()
                             .withManifestation("24699773"));
 
-            assertThat(result.getRecords().length, is(19));
-            assertThat(result.getRecords()[0].getId(), is("870970-basis:24699773"));
-            assertThat(result.getRecords()[0].getTypes().length, is(1));
-            assertThat(result.getRecords()[0].getTypes()[0], is("Lydbog (cd)"));
+            assertThat(result.getGroups().length, is(19));
+            assertThat(result.getGroups()[0].getRecords()[0].getId(), is("870970-basis:27100104"));
+            assertThat(result.getGroups()[0].getRecords()[0].getTypes().length, is(1));
+            assertThat(result.getGroups()[0].getRecords()[0].getTypes()[0], is("Bog"));
 
-            assertThat(result.getRecords()[8].getId(), is("870970-basis:25449495"));
-            assertThat(result.getRecords()[8].getTypes().length, is(1));
-            assertThat(result.getRecords()[8].getTypes()[0], is("Bog stor skrift"));
+            assertThat(result.getGroups()[8].getRecords()[0].getId(), is("870970-basis:27296394"));
+            assertThat(result.getGroups()[8].getRecords()[0].getTypes().length, is(1));
+            assertThat(result.getGroups()[8].getRecords()[0].getTypes()[0], is("Bog"));
 
-            assertThat(result.getRecords()[0].getAgencyId(), is("870970"));
-            assertThat(result.getRecords()[0].getAgencyNamedIdentifier(), is("basis"));
-            assertThat(result.getRecords()[0].getManifestation(), is("24699773"));
+            assertThat(result.getGroups()[0].getRecords()[0].getAgencyId(), is("870970"));
+            assertThat(result.getGroups()[0].getRecords()[0].getAgencyNamedIdentifier(), is("basis"));
+            assertThat(result.getGroups()[0].getRecords()[0].getManifestation(), is("27100104"));
 
-            assertThat(result.getRecords()[8].getAgencyId(), is("870970"));
-            assertThat(result.getRecords()[8].getAgencyNamedIdentifier(), is("basis"));
-            assertThat(result.getRecords()[8].getManifestation(), is("25449495"));
+            assertThat(result.getGroups()[8].getRecords()[0].getAgencyId(), is("870970"));
+            assertThat(result.getGroups()[8].getRecords()[0].getAgencyNamedIdentifier(), is("basis"));
+            assertThat(result.getGroups()[8].getRecords()[0].getManifestation(), is("27296394"));
         }
         catch(WorkPresentationConnectorException connectorException) {
             throw connectorException;
@@ -139,13 +138,13 @@ public class WorkPresentationConnectorTest {
                             .withManifestation("25449495"));
 
             assertThat(result.getDescription().contains("karismatiske fødselslæge"), is(true));
-            assertThat(result.getFullTitle(), is("Den lukkede bog : roman"));
+            assertThat(result.getFullTitle(), is("Den lukkede bog (Ved Torben Petersen)"));
             assertThat(result.getTitle(), is("Den lukkede bog"));
-            assertThat(result.getWorkId(), is("work-of:870970-basis:24699773"));
+            assertThat(result.getWorkId(), is("work-of:870970-basis:27100104"));
 
             assertThat(result.getAgencyId(), is("870970"));
             assertThat(result.getAgencyNamedIdentifier(), is("basis"));
-            assertThat(result.getManifestation(), is("24699773"));
+            assertThat(result.getManifestation(), is("27100104"));
         }
         catch(WorkPresentationConnectorException connectorException) {
             throw connectorException;
@@ -159,7 +158,7 @@ public class WorkPresentationConnectorTest {
             WorkPresentationWork result = connector
                     .presentWorks(new WorkPresentationQuery()
                             .withManifestation("25449495").withAgencyId("870976"));
-            assertThat("Has no results", result.getRecords().length, is(0));
+            assertThat("Has no results", result.getGroups().length, is(0));
         }
         catch(WorkPresentationConnectorException connectorException) {
             throw connectorException;

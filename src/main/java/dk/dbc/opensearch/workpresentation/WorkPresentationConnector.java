@@ -10,6 +10,7 @@ import dk.dbc.httpclient.HttpGet;
 import dk.dbc.invariant.InvariantUtil;
 
 import dk.dbc.opensearch.workpresentation.model.WorkPresentationEntity;
+import dk.dbc.opensearch.workpresentation.model.WorkPresentationGroup;
 import dk.dbc.opensearch.workpresentation.model.WorkPresentationRecord;
 import dk.dbc.opensearch.workpresentation.model.WorkPresentationWork;
 import net.jodah.failsafe.RetryPolicy;
@@ -116,11 +117,11 @@ public class WorkPresentationConnector {
             if(entity == null) {
                 throw new WorkPresentationConnectorException("Work-presentation service returned with null-valued entity");
             }
-            LOGGER.info("{} results for work-presentation query", entity.getWork().getRecords().length);
+            LOGGER.info("{} results for work-presentation query", entity.getWork().getGroups().length);
             return entity.getWork();
         } else {
             LOGGER.info("No results for work-presentation query");
-            return new WorkPresentationWork().withRecords(new WorkPresentationRecord[0]);
+            return new WorkPresentationWork().withGroups(new WorkPresentationGroup[0]);
         }
     }
 

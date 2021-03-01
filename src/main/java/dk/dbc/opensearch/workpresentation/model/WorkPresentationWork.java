@@ -25,7 +25,7 @@ public class WorkPresentationWork {
 
     private WorkPresentationSubject[] subjects;
 
-    private WorkPresentationRecord[] records;
+    private WorkPresentationGroup[] groups;
 
     public String getDescription() {
         return description;
@@ -65,14 +65,6 @@ public class WorkPresentationWork {
 
     public void setSubjects(WorkPresentationSubject[] subjects) {
         this.subjects = subjects;
-    }
-
-    public WorkPresentationRecord[] getRecords() {
-        return records;
-    }
-
-    public void setRecords(WorkPresentationRecord[] records) {
-        this.records = records;
     }
 
     public String getAgencyId() {
@@ -115,8 +107,16 @@ public class WorkPresentationWork {
         return this;
     }
 
-    public WorkPresentationWork withRecords(WorkPresentationRecord[] records) {
-        this.records = records;
+    public WorkPresentationGroup[] getGroups() {
+        return groups;
+    }
+
+    public void setGroups(WorkPresentationGroup[] groups) {
+        this.groups = groups;
+    }
+
+    public WorkPresentationWork withGroups(WorkPresentationGroup[] groups) {
+        this.groups = groups;
         return this;
     }
 
@@ -130,14 +130,26 @@ public class WorkPresentationWork {
                 fullTitle.equals(that.fullTitle) &&
                 workId.equals(that.workId) &&
                 Arrays.equals(subjects, that.subjects) &&
-                Arrays.equals(records, that.records);
+                Arrays.equals(groups, that.groups);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(description, title, fullTitle, workId);
         result = 31 * result + Arrays.hashCode(subjects);
-        result = 31 * result + Arrays.hashCode(records);
+        result = 31 * result + Arrays.hashCode(groups);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkPresentationWork{" +
+                "description='" + description + '\'' +
+                ", title='" + title + '\'' +
+                ", fullTitle='" + fullTitle + '\'' +
+                ", workId='" + workId + '\'' +
+                ", subjects=" + Arrays.toString(subjects) +
+                ", groups=" + Arrays.toString(groups) +
+                '}';
     }
 }
