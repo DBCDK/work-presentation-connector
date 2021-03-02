@@ -75,4 +75,12 @@ public class WorkPresentationRecord {
         result = 31 * result + Arrays.hashCode(types);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "WorkPresentationRecord{" +
+                "id='" + id + '\'' +
+                ", types=" + Arrays.toString(types) +
+                '}';
+    }
 }

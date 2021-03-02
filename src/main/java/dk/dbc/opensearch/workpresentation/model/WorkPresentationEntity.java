@@ -21,4 +21,11 @@ public class WorkPresentationEntity {
     public void setWork(WorkPresentationWork result) {
         this.work = result;
     }
+
+    @Override
+    public String toString() {
+        return "WorkPresentationEntity{" +
+                "work=" + work +
+                '}';
+    }
 }
